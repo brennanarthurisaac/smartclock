@@ -1,0 +1,8 @@
+<h4><strong>Top Headlines</strong></h4>
+<ol class="list-group">
+	{% for article in articles %}
+		<li class="list-group-item d-flex justify-content-between align-items-center">
+		<a href={{ article.url }}>{{ article.title }}</a></li>
+	{% endfor %}
+</ol>
+<h5>Powered by <a href="https://newsapi.org">newsapi.org</a></h5>

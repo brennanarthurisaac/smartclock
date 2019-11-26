@@ -1,0 +1,12 @@
+{% for item in items %}
+	<div class="alert alert-dismissible alert-secondary">
+		<strong>{{ item.name }}</strong>
+		<strong class="float-right">
+			{{ item.string_time }}
+		</strong>
+		<a 	href="{{ url_for('remove_alarm', 
+							alarm_id=item.alarm_id) }}">
+			&times;
+		</a>
+	</div>
+{% endfor %}

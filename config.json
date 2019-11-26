@@ -1,0 +1,15 @@
+{
+  "backup_secret_key": "In-the-beginning-the-universe-was-created",
+  "tts_message": "You have an alarm, for, %s",
+  "weather_api": {
+    "url": "http://api.openweathermap.org/data/2.5/weather",
+    "city": "Exeter",
+    "api_key": "efcdab4eedd0733a2b6963ac38dd8787"
+  },
+  "news_api": {
+    "max_stories": 7,
+    "url": "https://newsapi.org/v2/top-headlines",
+    "country": "gb",
+    "api_key": "47d71ec29a564aee9accc7d0962343cf"
+  }
+}

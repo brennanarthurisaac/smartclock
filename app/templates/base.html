@@ -1,0 +1,109 @@
+{% extends "bootstrap/base.html" %}
+
+<!-- 
+Base template:
+	Built ontop of bootstrap's base template using Django.
+	Relevant blocks in this template fill into sections on the base layer.
+-->
+<!-- TITLE -->
+{% block title %}
+    {% if title %}
+		{{ title }} - Smart Clock
+	{% else %}
+		Smart Clock
+	{% endif %}
+{% endblock %}
+
+<!-- STYLES
+https://stackoverflow.com/questions/34664156/flask-bootstrap-custom-theme -->
+{% block styles %}
+{{super()}}
+	<link 	rel="stylesheet" 
+			href="https://bootswatch.com/4/darkly/bootstrap.css">
+	<link 	rel="stylesheet" 
+			href="https://bootswatch.com/4/darkly/bootstrap.min.css">
+{% endblock %}
+
+<!-- NAVBAR -->
+{% block navbar %}
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<h1 class="float-left">Smart Clock</h1>
+	</nav>
+	<hr class="my-1">
+{% endblock %}
+
+{% block content %}
+	<!-- MAIN CONTENT -->
+	<div class="container" style="min-width: 500px">
+		<div class="jumbotron">
+			<!-- TIME LABELS -->
+			<h1 id="clock" class="display-1 text-center">-
+			</h1><span class="card border-light alert-secondary mb-3 text-center">
+				<!-- SMART API CONTENT -->
+				<div class="card-body" style="min-height: 350px">
+					<div class="float-left text-left text-white" 
+					     style="max-width: 160px">
+					<!-- WEATHER FEED GOES HERE -->
+						<div id="weather">
+							
+						</div>
+					</div>
+					<div class="float-right text-left text-white" 
+						 style="max-width: 280px">
+						<div id = "news" class="text-left wrap">
+							
+						</div>
+					</div>
+				</div>
+			</span>
+			
+			<!-- TAB TITLE AND BUTTONS -->
+			<h3 class="display-5">{{ title }}
+				<small class="text-muted">{{ subtitle }}</small>
+				<span class="btn-group float-right" role="group" aria-label="Tabs">
+					<!-- TAB BUTTONS -->
+					<button type="button" class="btn btn-secondary">
+						<a href="{{ url_for('notifications') }}">Present</a>
+					</button>
+					<button type="button" class="btn btn-secondary">
+						<a href="{{ url_for('alarms', add_alarm=0) }}">Future</a>
+					</button>
+				</span>
+			</h3>
+			<h4>
+			</h4>
+			</br>
+			<!-- TO BE FILLED WITH TAB CONTENT -->
+			{% block section_content %}{% endblock %}
+		</div>
+	</div>
+{% endblock %}
+{% block scripts %}
+	{% block extra_scripts %}{% endblock %}
+	<script>
+		var clock_element = document.getElementById("clock");
+		var news_element = document.getElementById("news");
+		var weather_element = document.getElementById("weather");
+
+		function updateClockFeed() {
+			fetch("{{ url_for('time_feed') }}")
+				.then(response => {
+						response.text().then(t => {clock_element.innerHTML = t})
+					});
+		}
+		function updateSmartFeeds() {
+			fetch("{{ url_for('news_feed') }}")
+				.then(response => {
+						response.text().then(t => {news_element.innerHTML = t})
+					});
+			fetch("{{ url_for('weather_feed') }}")
+				.then(response => {
+						response.text().then(t => {weather_element.innerHTML = t})
+					});
+		}
+		updateClockFeed()
+		setInterval(updateClockFeed, 1000);
+		updateSmartFeeds()
+		setInterval(updateSmartFeeds, 10000);
+	</script>
+{% endblock %}

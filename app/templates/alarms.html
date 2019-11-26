@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block section_content %}
+	{% if add_alarm == 0 %}
+		<!-- Add Alarm (show form) -->
+		<button type="button float-center" class="btn btn-secondary">
+			<a href="{{ url_for('alarms', add_alarm=1) }}">Add Alarm</a>
+		</button>
+	{% else %}
+		<!-- Add alarm form -->
+		<h4>Add Alarm</h4>
+		{{ wtf.quick_form(form) }}
+		<br>
+		<!-- Cancel (don't add alarm) -->
+		<button type="button float-center" class="btn btn-secondary">
+			<a href="{{ url_for('alarms', add_alarm=0) }}">Cancel</a>
+		</button>
+	{% endif %}
+	<p></p>
+	<!-- UPCOMING ALARMS -->
+	<div id="alarm_contents">
+	
+	</div>
+{% endblock %}
+{% block extra_scripts %}
+	<script>
+		var content_element = document.getElementById("alarm_contents")
+		
+		function updateFeed() {
+			fetch("{{ url_for('alarms_feed') }}")
+				.then(response => {
+						response.text().then(t => {
+						content_element.innerHTML = t
+						})
+					});
+		};
+		updateFeed();
+		setInterval(updateFeed, 1000);
+	</script>
+{% endblock %}

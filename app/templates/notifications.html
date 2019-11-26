@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block section_content %}
+
+	{% block before_table %}{% endblock %}
+	<!-- NOTIFICATIONS -->
+	<div id="notifications_content">
+	
+	</div>
+{% endblock %}
+{% block extra_scripts %}
+	<script>
+		var content_element = document.getElementById("notifications_content")
+		
+		function updateFeed() {
+			fetch("{{ url_for('notifications_feed') }}")
+				.then(response => {
+						response.text().then(t => {
+						content_element.innerHTML = t
+						})
+					});
+		};
+		updateFeed();
+		setInterval(updateFeed, 1000);
+	</script>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends base.html %}
+
+{% block section_content %}
+	{% if error_message %}
+		<h1>Error.</h1>
+		<p class="text-danger">{{ error_message }}</p>
+	{% else %}
+		<h1>Unknown Error.</h1>
+		<p class="text-danger">Could not complete that action.</p>
+	{% endif %}
+	<button type="button float-center" class="btn btn-secondary">
+		<a href="{{ url_for('notifications') }}">Return</a>
+	</button>
+{% endblock %}
